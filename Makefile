@@ -11,9 +11,9 @@ CC=${BIN}/${TARGET}-gcc"
 AS=${BIN}/${TARGET}-as"
 
 
-all: os
+all: myos
 
-os: boot.o kernel.o linker.ld
+myos: boot.o kernel.o linker.ld
 	${CC} -T linker.ld -o myos.bin -ffreestanding -O2 -nostdlib boot.o kernel.o -lgcc
 
 boot.o: boot.s
@@ -22,6 +22,12 @@ boot.o: boot.s
 kernel.o: kernel.c
 	${CC} -c kernel.c -o kernel.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
 
+install: myos.bin grub.cfg
+	mkdir -p isodir/boot/grub
+	cp myos.bin isodir/boot/myos.bin
+	cp grub.cfg isodir/boot/grub/grub.cfg
+	grub-mkrescue -o myos.iso isodir
+
 clean:
-	rm ./*.o
+	rm -rf isodir/ *.bin *.o *.iso
 
