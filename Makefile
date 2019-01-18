@@ -22,7 +22,7 @@ boot.o: boot.s
 kernel.o: kernel.c
 	${CC} -c kernel.c -o kernel.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
 
-install: myos.bin grub.cfg
+image: myos.bin grub.cfg
 	mkdir -p isodir/boot/grub
 	cp myos.bin isodir/boot/myos.bin
 	cp grub.cfg isodir/boot/grub/grub.cfg
